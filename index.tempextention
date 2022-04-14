@@ -1,0 +1,44 @@
+const Twit = require('twit'),
+  fs = require('fs'),
+  path = require('path'),
+  config = require(path.join( __dirname, 'config.js') );
+
+var T = new Twit(config)
+
+let filePath = './congrats.mp4'
+
+T.postMediaChunked({
+    file_path: filePath
+}, (err, data, response) => {
+
+    if (err) {
+        cosnole.error(err);
+    }
+
+    let mediaIdStr = data.media_id_string;
+
+    let params = {
+        status: 'File time lezgo',
+        media_ids: [mediaIdStr]
+    }
+
+    T.post('statuses/update', params, (err, data, response) => {
+        console.log(data)
+    })
+})
+
+
+//async function main() {
+//  const T = new Twit( config );
+//
+//  T.post('statuses/update', {
+//    status: 'File time lezgo',
+//    media: "./media/congrats.mp4"
+//  }, function( err, data, response ) {
+//    console.log( data )
+//  } );
+//}
+
+console.log("Starting the bot...");
+
+//setInterval(main, 5000)
